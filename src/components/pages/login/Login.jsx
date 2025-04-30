@@ -4,6 +4,8 @@ import { ClipLoader } from "react-spinners";
 import * as Yup from 'yup';
 import './Login.css';
 import axios from "axios";
+// import { Router } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -22,6 +24,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+    
     useEffect(() => {
         document.title = "Login"
         return () => { document.title = "App React" }
@@ -46,6 +49,11 @@ const Login = () => {
                         }
                     ).then(function (response) {
                         console.log(response);
+                        if (response.data && response.data.token) {
+                            localStorage.setItem('token', response.data.token);
+                            // Router.push('./Dashboard')
+                            navigate('./Dashboard')
+                        }
                         setSubmitting(false)
                     })
                         .catch(function (error) {
